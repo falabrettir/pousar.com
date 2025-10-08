@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Plane, Hotel, Car, Search } from "lucide-react"
+import { Plane, CreditCard, History, Briefcase, Search } from "lucide-react"
+
 
 export default function TravelLandingPage() {
   return (
@@ -11,69 +12,67 @@ export default function TravelLandingPage() {
         <div className="max-w-6xl mx-auto flex justify-between items-center px-4">
           <h1 className="text-2xl font-bold text-blue-600">Pousar.com</h1>
           <nav className="space-x-6 text-sm font-medium text-gray-700">
-            <a href="#" className="hover:text-blue-600">Flights</a>
-            <a href="#" className="hover:text-blue-600">Hotels</a>
-            <a href="#" className="hover:text-blue-600">Cars</a>
-            <a href="#" className="hover:text-blue-600">Deals</a>
           </nav>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">Sign In</Button>
+          <div className="flex items-center gap-4">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white">Cadastre-se</Button>
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white">Login</Button>
+          </div>
         </div>
       </header>
 
       {/* Hero Section */}
       <section className="flex flex-col items-center text-center py-20 px-4">
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          Your journey, simplified.
+          Sua jornada, simplificada.
         </h2>
         <p className="text-lg md:text-xl text-gray-600 max-w-2xl mb-8">
-          Book flights, hotels, and cars with ease. Compare hundreds of airlines and bundle your trip for the best experience.
+          Encontre os melhores preços e horários para suas próximas viagens.
         </p>
 
         <Card className="w-full max-w-3xl shadow-lg">
           <CardContent className="p-6 space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Input placeholder="From" />
-              <Input placeholder="To" />
+              <Input placeholder="Origem" />
+              <Input placeholder="Destino" />
               <Input type="date" />
               <Button className="bg-blue-600 hover:bg-blue-700">
-                <Search className="w-4 h-4 mr-2" /> Search
+                <Search className="w-4 h-4 mr-2" /> Buscar
               </Button>
             </div>
           </CardContent>
         </Card>
       </section>
-
+      
       {/* Features */}
       <section className="bg-white py-16">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-10 px-6">
           <FeatureCard
-            icon={<Plane className="w-10 h-10 text-blue-600" />}
-            title="Flights"
-            text="Effortlessly compare prices from hundreds of airlines."
+            icon={<CreditCard className="w-10 h-10 text-blue-600" />}
+            title="Compra Rápida e Segura"
+            text="Adquira suas passagens com poucos cliques e total segurança em nossa plataforma."
           />
           <FeatureCard
-            icon={<Hotel className="w-10 h-10 text-blue-600" />}
-            title="Hotels"
-            text="Find the perfect place to stay at unbeatable rates."
+            icon={<Briefcase className="w-10 h-10 text-blue-600" />}
+            title="Gerencie Sua Viagem"
+            text="Altere voos, adicione bagagens e faça o check-in de forma fácil e online."
           />
           <FeatureCard
-            icon={<Car className="w-10 h-10 text-blue-600" />}
-            title="Car Rentals"
-            text="Get around with ease — rent from top providers worldwide."
+            icon={<History className="w-10 h-10 text-blue-600" />}
+            title="Histórico de Compras"
+            text="Acesse seu histórico de viagens e consulte os detalhes de voos anteriores."
           />
         </div>
       </section>
-
       {/* CTA */}
       <section className="bg-blue-600 text-white text-center py-16 px-4">
         <h3 className="text-3xl font-semibold mb-4">
-          Ready to start your next adventure?
+          Preparado para viajar?
         </h3>
         <p className="text-lg mb-8">
-          Simplify your travel planning — all in one place.
+          Simplifque seu planejamento de viagens com a Pousar.com.
         </p>
         <Button variant="secondary" className="text-blue-600 bg-white hover:bg-gray-100">
-          Explore Deals
+          Explore nossos pacotes
         </Button>
       </section>
 

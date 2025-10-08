@@ -44,6 +44,9 @@ function RegisterView({ onSwitchToLogin, onGoBack }) {
         </CardHeader>
         <CardContent className="space-y-4">
           <Input id="name" placeholder="Nome completo" required />
+          <Input id="name" placeholder="Data de nascimento" required />
+          <Input id="name" placeholder="CPF (apenas números)" required />
+          <Input id="name" placeholder="Telefone" required />
           <Input id="email" type="email" placeholder="Email" required />
           <Input id="password" type="password" placeholder="Senha" required />
           <Button className="w-full bg-blue-600 hover:bg-blue-700">Cadastrar</Button>

@@ -1,0 +1,36 @@
+# Arquivos do Sistema Operacional (macOS e Windows)
+.DS_Store
+Thumbs.db
+
+# ----------------------------------------------------
+# A pasta MAIS IMPORTANTE a ser ignorada.
+# Contém milhares de dependências que podem ser baixadas
+# rodando 'npm install'.
+node_modules/
+
+# ----------------------------------------------------
+# O arquivo MAIS IMPORTANTE para a SEGURANÇA.
+# Estes arquivos conterão nossas senhas de banco de dados
+# e chaves de API. NUNCA DEVEM IR PARA O GITHUB!
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# ----------------------------------------------------
+# Logs e relatórios de erro
+npm-debug.log*
+yarn-error.log
+
+# ----------------------------------------------------
+# Pastas de "build" (código compilado/final)
+# O Docker vai cuidar disso, mas é bom ignorar
+dist/
+build/
+.next/
+
+# ----------------------------------------------------
+# Dados do volume do banco de dados
+# (Caso ele seja criado localmente fora do volume)
+postgres_data/

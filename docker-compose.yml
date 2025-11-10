@@ -1,0 +1,63 @@
+# Aqui definimos nossos "serviços" ou "containers"
+services:
+  
+  # 1. O Serviço da API (Backend)
+  api:
+    # Diz ao Compose para construir a imagem usando o Dockerfile na pasta ./backend
+    build: ./backend
+    # Nome do container para fácil identificação
+    container_name: pousar-api
+    # Mapeia a porta 3001 do container para a porta 3001 da sua máquina
+    ports:
+      - "3001:3001"
+    # "Volumes" espelham a pasta do seu PC para dentro do container.
+    # Isso é MÁGICO: você altera o código no seu PC e ele atualiza
+    # dentro do container sem precisar "re-buildar" (hot-reload).
+    volumes:
+      - ./backend:/app
+      # Ignora o node_modules, pois ele deve ser gerenciado DENTRO do container
+      - /app/node_modules
+    # Define variáveis de ambiente para a API
+    environment:
+      - DATABASE_URL=postgresql://postgres:sua-senha-segura@db:5432/pousar_db
+      - NODE_ENV=development
+    # Faz com que a API só inicie DEPOIS que o serviço 'db' estiver pronto
+    depends_on:
+      - db
+
+  # 2. O Serviço do Cliente (Frontend)
+  client:
+    build: ./frontend
+    container_name: pousar-client
+    ports:
+      # O Vite (que usaremos no React) roda na porta 5173 por padrão
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    # Garante que o container fique "ligado" para o hot-reload
+    stdin_open: true
+    tty: true
+
+  # 3. O Serviço do Banco de Dados (PostgreSQL)
+  db:
+    # Usa uma imagem pronta oficial do PostgreSQL
+    image: postgres:14-alpine
+    container_name: pousar-db
+    ports:
+      # Mapeia a porta do Postgres para sua máquina (para podermos "espiar" o banco)
+      - "5433:5432"
+    # Define as credenciais do banco.
+    # IMPORTANTE: Mude 'sua-senha-segura' para uma senha de sua escolha!
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=pousar_db
+    # Cria um "volume" para persistir os dados do banco.
+    # Sem isso, você perderia todos os dados ao desligar o container!
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+# Define o volume de dados persistente que usamos no serviço 'db'
+volumes:
+  postgres_data:

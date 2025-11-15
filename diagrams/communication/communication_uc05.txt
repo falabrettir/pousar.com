@@ -1,0 +1,39 @@
+@startuml
+' Mantendo o ortho que você gostou
+skinparam linestyle ortho
+skinparam nodesep 100
+skinparam ranksep 60
+
+' ----- Definição dos Participantes -----
+actor "Viajante" as viajante
+rectangle "PassagemController" as controller
+rectangle "PassagemService" as service
+rectangle "BancoDeDados" as db
+
+' ----- Posicionamento (Layout) -----
+' Posiciona o controller à direita do viajante
+viajante -[hidden]right- controller
+' Posiciona o service abaixo do controller
+controller -[hidden]down- service
+' Posiciona o db à direita do service
+service -[hidden]right- db
+
+' ----- Links de Comunicação e Mensagens -----
+
+' 1. Interação: Viajante <-> Controller (Horizontal)
+' Texto quebrado com \n
+viajante -up-> controller: "1: Clica na opção de menu\n'Minhas Viagens'"
+' Texto quebrado com \n
+controller -left-> viajante: "1.2: Exibe uma lista com\nas passagens encontradas"
+
+' 2. Interação: Controller <-> Service (Vertical)
+controller -left-> service: "1.1: handleConsultarHistorico(cpfViajante)"
+' CORRIGIDO: A seta agora vai do Service para o Controller
+service -right-> controller: "1.1.2: Retorna a lista de passagens"
+
+' 3. Interação: Service <-> BancoDeDados (Horizontal)
+' Texto quebrado com \n
+service -right-> db: "1.1.1: Busca todas as passagens\nassociadas ao Viajante logado"
+db -left-> service: "1.1.1.1: Retorna a lista de passagens"
+
+@enduml

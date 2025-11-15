@@ -1,0 +1,44 @@
+@startuml
+' Define a skinparam para linhas ortogonais, como no exemplo
+skinparam linestyle ortho
+
+' ----- Definição dos Participantes -----
+actor "Viajante" as viajante
+rectangle "UsuarioController" as controller
+rectangle "UsuarioService" as service
+rectangle "BancoDeDados" as db
+
+' ----- Posicionamento (Layout) -----
+' Posiciona o controller à direita do viajante
+viajante -[hidden]right- controller
+' Posiciona o service abaixo do controller
+controller -[hidden]down- service
+' Posiciona o db à direita do service
+service -[hidden]right- db
+
+' ----- Links de Comunicação e Mensagens -----
+
+' 1. Interação: Viajante <-> Controller (Horizontal)
+viajante -right-> controller: 1: Clica no botão \n 'Cadastra-se'
+controller -left-> viajante: 1.1: Exibe o formulário de cadastro
+
+' 2. Interação: Viajante <-> Controller (Horizontal)
+' Texto quebrado com \n
+viajante -up-> controller: 2: Preenche o formulário\ne clica em Criar Conta
+' Texto quebrado com \n
+controller -left-> viajante: 2.2: Exibe "Conta criada com sucesso!"\ne redireciona
+
+' 3. Interação: Controller <-> Service (Vertical)
+controller -left-> service: 2.1: handleCadastro(dados)
+service -right-> controller: 2.1.3: Retorna sucesso
+
+' 4. Interação: Service <-> BancoDeDados (Horizontal)
+' Texto quebrado com \n
+service -right-> db: 2.1.1: Verifica se email ou CPF\njá existem
+db -left-> service: 2.1.1.1: Retorna que não existem
+
+' Texto quebrado com \n
+service -down-> db: 2.1.2: Cria um novo registro\nna tabela viajantes
+db -up-> service: 2.1.2.1: Confirma a criação
+
+@enduml

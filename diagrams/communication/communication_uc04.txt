@@ -1,0 +1,41 @@
+@startuml
+' Mantendo o ortho que você gostou
+skinparam linestyle ortho
+skinparam nodesep 100
+skinparam ranksep 60
+
+' ----- Definição dos Participantes -----
+actor "Viajante" as viajante
+rectangle "PassagemController" as controller
+rectangle "PassagemService" as service
+rectangle "BancoDeDados" as db
+
+' ----- Posicionamento (Layout) -----
+' Posiciona o controller à direita do viajante
+viajante -[hidden]right- controller
+' Posiciona o service abaixo do controller
+controller -[hidden]down- service
+' Posiciona o db à direita do service
+service -[hidden]up- db
+
+' ----- Links de Comunicação e Mensagens -----
+
+' 1. Interação: Viajante <-> Controller (Horizontal)
+' Texto quebrado com \n
+viajante -right-> controller: "1: Acessa histórico e seleciona\na passagem que deseja cancelar"
+controller -left-> viajante: "1.2: Exibe mensagem de sucesso"
+
+' 2. Interação: Controller <-> Service (Vertical)
+controller -left-> service: "1.1: handleCancelarPassagem(idPassagem)"
+service -right-> controller: "1.1.3: Retorna sucesso"
+
+' 3. Interação: Service <-> BancoDeDados (Horizontal)
+' Texto quebrado com \n
+service -up-> db: "1.1.1: Verifica as regras de negócio\npara cancelamento"
+' Texto quebrado com \n
+db -down-> service: "1.1.1.1: Retorna que as regras\nforam atendidas"
+' Texto quebrado com \n
+service -up-> db: "1.1.2: Atualiza o status da passagem\npara 'Cancelada'"
+db -down-> service: "1.1.2.1: Confirma a atualização"
+
+@enduml

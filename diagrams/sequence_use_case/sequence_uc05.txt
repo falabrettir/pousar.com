@@ -1,0 +1,21 @@
+sequenceDiagram
+    actor Viajante
+    participant PassagemController
+    participant PassagemService
+    participant BancoDeDados
+
+    Viajante->>PassagemController: Clica na opção de menu "Minhas Viagens"
+    activate PassagemController
+    PassagemController->>PassagemService: handleConsultarHistorico(cpfViajante)
+    activate PassagemService
+    
+    PassagemService->>BancoDeDados: Busca todas as passagens associadas ao Viajante logado
+    activate BancoDeDados
+    BancoDeDados-->>PassagemService: Retorna a lista de passagens
+    deactivate BancoDeDados
+    
+    PassagemService-->>PassagemController: Retorna a lista de passagens
+    deactivate PassagemService
+    
+    PassagemController-->>Viajante: Exibe uma lista com as passagens encontradas
+    deactivate PassagemController

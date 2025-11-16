@@ -1,0 +1,26 @@
+sequenceDiagram
+    actor Viajante
+    participant PassagemController
+    participant PassagemService
+    participant BancoDeDados
+
+    Viajante->>PassagemController: Acessa histórico e seleciona a passagem que deseja cancelar
+    activate PassagemController
+    PassagemController->>PassagemService: handleCancelarPassagem(idPassagem)
+    activate PassagemService
+
+    PassagemService->>BancoDeDados: Verifica as regras de negócio para cancelamento
+    activate BancoDeDados
+    BancoDeDados-->>PassagemService: Retorna que as regras foram atendidas
+    deactivate BancoDeDados
+    
+    PassagemService->>BancoDeDados: Atualiza o status da passagem para "Cancelada"
+    activate BancoDeDados
+    BancoDeDados-->>PassagemService: Confirma a atualização
+    deactivate BancoDeDados
+    
+    PassagemService-->>PassagemController: Retorna sucesso
+    deactivate PassagemService
+    
+    PassagemController-->>Viajante: Exibe mensagem de sucesso
+    deactivate PassagemController

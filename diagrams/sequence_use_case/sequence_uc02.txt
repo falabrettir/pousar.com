@@ -1,0 +1,28 @@
+sequenceDiagram
+    actor Viajante
+    participant UsuarioController
+    participant UsuarioService
+    participant BancoDeDados
+
+    Viajante->>UsuarioController: Clica no botão "Entrar"
+    activate UsuarioController
+    UsuarioController-->>Viajante: Exibe o formulário de login
+    deactivate UsuarioController
+
+    Viajante->>UsuarioController: Preenche email, senha e clica em "Confirmar"
+    activate UsuarioController
+    UsuarioController->>UsuarioService: handleLogin(email, senha)
+    activate UsuarioService
+
+    UsuarioService->>BancoDeDados: Busca viajante pelo email
+    activate BancoDeDados
+    BancoDeDados-->>UsuarioService: Retorna dados do viajante (com senha hash)
+    deactivate BancoDeDados
+
+    Note right of UsuarioService: Compara a senha fornecida com a senha (hash) armazenada
+
+    UsuarioService-->>UsuarioController: Retorna que o usuário foi autenticado
+    deactivate UsuarioService
+
+    UsuarioController-->>Viajante: Redireciona para a página principal (dashboard)
+    deactivate UsuarioController

@@ -1,0 +1,31 @@
+sequenceDiagram
+    actor Viajante
+    participant UsuarioController
+    participant UsuarioService
+    participant BancoDeDados
+
+    Viajante->>UsuarioController: Clica no botão "Cadastrar-se"
+    activate UsuarioController
+    UsuarioController-->>Viajante: Exibe o formulário de cadastro
+    deactivate UsuarioController
+
+    Viajante->>UsuarioController: Preenche o formulário e clica em "Criar Conta"
+    activate UsuarioController
+    UsuarioController->>UsuarioService: handleCadastro(dados)
+    activate UsuarioService
+    
+    UsuarioService->>BancoDeDados: Verifica se email ou CPF já existem
+    activate BancoDeDados
+    BancoDeDados-->>UsuarioService: Retorna que não existem
+    deactivate BancoDeDados
+    
+    UsuarioService->>BancoDeDados: Cria um novo registro na tabela viajantes
+    activate BancoDeDados
+    BancoDeDados-->>UsuarioService: Confirma a criação
+    deactivate BancoDeDados
+    
+    UsuarioService-->>UsuarioController: Retorna sucesso
+    deactivate UsuarioService
+    
+    UsuarioController-->>Viajante: Exibe "Conta criada com sucesso!" e redireciona
+    deactivate UsuarioController

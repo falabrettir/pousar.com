@@ -1,0 +1,52 @@
+@startuml
+' Mantendo o ortho que você gostou
+skinparam linestyle ortho
+skinparam nodesep 100
+skinparam ranksep 60
+
+' ----- Definição dos Participantes -----
+actor "Viajante" as viajante
+rectangle "VooController" as vooController
+rectangle "VooService" as vooService
+rectangle "PassagemController" as passagemController
+rectangle "PassagemService" as passagemService
+rectangle "BancoDeDados" as db
+
+' ----- Posicionamento (Layout) -----
+' Linha de Cima (Busca)
+viajante -[hidden]right- vooController
+vooController -[hidden]right- vooService
+vooService -[hidden]right- db
+
+' Linha de Baixo (Compra)
+' Alinha o PassagemController abaixo do VooController
+vooController -[hidden]down- passagemController
+passagemController -[hidden]right- passagemService
+' Alinha o PassagemService abaixo do VooService
+vooService -[hidden]down- passagemService
+
+
+' ----- Links de Comunicação e Mensagens -----
+' (Usando direções para "cruzar" o layout)
+
+' --- 1. FLUXO DE BUSCA DE VOO (Linha de Cima) ---
+viajante -right-> vooController: "1: Informa Origem, Destino\ne Data do voo"
+vooController -right-> vooService: "1.1: handleBuscarVoos(dados)"
+vooService -right-> db: "1.1.1: Busca voos disponíveis"
+db -left-> vooService: "1.1.1.1: Retorna lista de voos"
+vooService -left-> vooController: "1.1.2: Retorna lista de voos"
+vooController -left-> viajante: "1.1.3: Exibe lista de voos disponíveis"
+
+' --- 2. FLUXO DE COMPRA DE PASSAGEM (Linha de Baixo) ---
+' Viajante "pula" para baixo
+viajante -down-> passagemController: "2: Seleciona voo, assento,\ninforma dados e pagamento"
+passagemController -right-> passagemService: "2.1: handleComprarPassagem(dados)"
+' PassagemService "pula" para o DB (que está na linha de cima)
+passagemService -up-> db: "2.1.1: Cria uma nova Passagem\ncom código de reserva"
+' DB "pula" de volta
+db -down-> passagemService: "2.1.1.1: Confirma criação da passagem"
+passagemService -left-> passagemController: "2.1.2: Retorna sucesso"
+' PassagemController "pula" de volta para o Viajante
+passagemController -up-> viajante: "2.2: Exibe a confirmação da compra"
+
+@enduml

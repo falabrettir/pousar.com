@@ -1,0 +1,29 @@
+@startuml
+' Define a direção do diagrama da esquerda para a direita
+left to right direction
+
+' Define o ator do sistema
+actor "Viajante" as viajante
+
+' Cria a caixa (boundary) para o sistema e agrupa os casos de uso
+rectangle "Pousar.com" {
+  usecase "Fazer Cadastro" as UC1
+  usecase "Fazer Login" as UC2
+  usecase "Comprar Passagem" as UC3
+  usecase "Gerenciar Passagem" as UC4
+  usecase "Consultar Histórico de Compras" as UC5
+  usecase "Fazer Avaliação do Voo" as UC6
+}
+
+' Define as associações diretas do ator com os casos de uso
+viajante -- UC1
+viajante -- UC2
+viajante -- UC3
+viajante -- UC5
+
+' Define as relações de extensão (extend)
+' A seta pontilhada aponta do caso de uso de extensão para o caso de uso base
+UC5 <.. UC4 : <<extend>>
+UC5 <.. UC6 : <<extend>>
+
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+' Mantendo o ortho
+skinparam linestyle ortho
+skinparam nodesep 100
+skinparam ranksep 60
+
+' ----- Definição dos Participantes -----
+actor "Viajante" as viajante
+rectangle "AvaliacaoController" as controller
+rectangle "AvaliacaoService" as service
+rectangle "BancoDeDados" as db
+
+' ----- Posicionamento (Layout) -----
+' Posiciona o controller à direita do viajante
+viajante -[hidden]right- controller
+' Posiciona o service abaixo do controller
+controller -[hidden]down- service
+' Posiciona o db à direita do service
+service -[hidden]right- db
+
+' ----- Links de Comunicação e Mensagens -----
+
+' 1. Interação: Viajante <-> Controller (Formulário)
+' Texto quebrado com \n
+viajante -right-> controller: "1: Clica no botão 'Avaliar Voo'\nem uma viagem no seu histórico"
+' Texto quebrado com \n
+controller -left-> viajante: "1.1: Apresenta um formulário\nde avaliação"
+
+' 2. Interação: Viajante <-> Controller (Envio)
+' Texto quebrado com \n
+viajante -up-> controller: "2: Preenche a nota, o comentário\ne clica em 'Enviar'"
+controller -left-> viajante: "2.2: Exibe uma mensagem de sucesso"
+
+' 3. Interação: Controller <-> Service (Vertical)
+controller -left-> service: "2.1: handleCriarAvaliacao(dados)"
+service -right-> controller: "2.1.2: Retorna sucesso"
+
+' 4. Interação: Service <-> BancoDeDados (Horizontal)
+' Texto quebrado com \n
+service -down-> db: "2.1.1: Salva a nova avaliação\nna tabela 'avaliacoes'"
+' Texto quebrado com \n
+db -up-> service: "2.1.1.1: Confirma que a avaliação\nfoi salva"
+
+@enduml

@@ -1,0 +1,28 @@
+sequenceDiagram
+    actor Viajante
+    participant AvaliacaoController
+    participant AvaliacaoService
+    participant BancoDeDados
+
+    Viajante->>AvaliacaoController: Clica no botão "Avaliar Voo" em uma viagem no seu histórico
+    activate AvaliacaoController
+    AvaliacaoController-->>Viajante: Apresenta um formulário de avaliação
+    deactivate AvaliacaoController
+
+    Viajante->>AvaliacaoController: Preenche a nota, o comentário e clica em "Enviar"
+    activate AvaliacaoController
+    AvaliacaoController->>AvaliacaoService: handleCriarAvaliacao(dados)
+    activate AvaliacaoService
+    
+    Note right of AvaliacaoService: Valida os dados da avaliação
+    
+    AvaliacaoService->>BancoDeDados: Salva a nova avaliação na tabela 'avaliacoes'
+    activate BancoDeDados
+    BancoDeDados-->>AvaliacaoService: Confirma que a avaliação foi salva
+    deactivate BancoDeDados
+    
+    AvaliacaoService-->>AvaliacaoController: Retorna sucesso
+    deactivate AvaliacaoService
+    
+    AvaliacaoController-->>Viajante: Exibe uma mensagem de sucesso
+    deactivate AvaliacaoController

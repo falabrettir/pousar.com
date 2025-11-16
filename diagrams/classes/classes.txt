@@ -1,0 +1,115 @@
+---
+config:
+  layout: elk
+---
+classDiagram
+    direction TB
+    class UsuarioController {
+        <<boundary>>
+        +handleLogin(req, res): Promise~Response~
+        +handleCadastro(req, res): Promise~Response~
+    }
+    class VooController {
+        <<boundary>>
+        +handleBuscarVoos(req, res): Promise~Response~
+        +handleDetalharVoo(req, res): Promise~Response~
+    }
+    class PassagemController {
+        <<boundary>>
+        +handleComprarPassagem(req, res): Promise~Response~
+        +handleConsultarHistorico(req, res): Promise~Response~
+        +handleCancelarPassagem(req, res): Promise~Response~
+    }
+    class AvaliacaoController {
+        <<boundary>>
+        +handleCriarAvaliacao(req, res): Promise~Response~
+    }
+    class UsuarioService {
+        <<control>>
+        +cadastrar(dados): Promise~Viajante~
+        +autenticar(email, senha): Promise~Viajante~
+    }
+    class VooService {
+        <<control>>
+        +buscarVoos(origem, destino, data): Promise~Voo[]~
+        +detalharVoo(idVoo): Promise~Voo | null~
+    }
+    class PassagemService {
+        <<control>>
+        +comprarPassagem(dados): Promise~Passagem~
+        +consultarHistorico(cpfViajante): Promise~Passagem[]~
+        +cancelarPassagem(idPassagem, cpfViajante): Promise~boolean~
+    }
+    class AvaliacaoService {
+        <<control>>
+        +criarAvaliacao(dados): Promise~Avaliacao~
+    }
+    class Viajante {
+        <<entity>>
+        -cpf: string
+        -nome_completo: string
+        -data_nascimento: Date
+        -email: string
+        -telefone: string
+        -endereco_completo: string
+    }
+    class CompanhiaAerea {
+        <<entity>>
+        -id_companhia: number
+        -nome: string
+        -codigo_iata: string
+    }
+    class Aeroporto {
+        <<entity>>
+        -id_aeroporto: number
+        -nome: string
+        -codigo_iata: string
+        -cidade: string
+        -pais: string
+    }
+    class Voo {
+        <<entity>>
+        -id_voo: number
+        -codigo_voo: string
+        -data_hora_partida: Date
+        -data_hora_chegada: Date
+        -preco: number
+        -portao_embarque: string
+        -terminal: string
+        -status_voo: string
+    }
+    class Passagem {
+        <<entity>>
+        -id_passagem: number
+        -numero_assento: string
+        -status: string
+        -data_compra: Date
+        -classe_viagem: string
+        -bagagem_despachada_inclusa: boolean
+    }
+    class Avaliacao {
+        <<entity>>
+        -id_avaliacao: number
+        -nota: number
+        -comentario: string
+        -data_avaliacao: Date
+    }
+    UsuarioController ..> UsuarioService
+    VooController ..> VooService
+    PassagemController ..> PassagemService
+    AvaliacaoController ..> AvaliacaoService
+    UsuarioService ..> Viajante
+    VooService ..> Voo
+    VooService ..> Aeroporto
+    VooService ..> CompanhiaAerea
+    PassagemService ..> Passagem
+    PassagemService ..> Viajante
+    PassagemService ..> Voo
+    AvaliacaoService ..> Avaliacao
+    AvaliacaoService ..> Passagem
+    Viajante "1" -- "0..*" Passagem : compra
+    Voo "1" -- "0..*" Passagem : contém
+    CompanhiaAerea "1" -- "0..*" Voo : opera
+    Aeroporto "1" -- "0..*" Voo : (origem)
+    Aeroporto "1" -- "0..*" Voo : (destino)
+    Passagem "1" -- "0..1" Avaliacao : é avaliada por

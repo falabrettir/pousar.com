@@ -1,0 +1,38 @@
+sequenceDiagram
+    actor Viajante
+    participant VooController
+    participant VooService
+    participant PassagemController
+    participant PassagemService
+    participant BancoDeDados
+
+    Viajante->>VooController: Informa Origem, Destino e Data do voo
+    activate VooController
+    VooController->>VooService: handleBuscarVoos(dados)
+    activate VooService
+    VooService->>BancoDeDados: Busca voos disponíveis
+    activate BancoDeDados
+    BancoDeDados-->>VooService: Retorna lista de voos
+    deactivate BancoDeDados
+    VooService-->>VooController: Retorna lista de voos
+    deactivate VooService
+    VooController-->>Viajante: Exibe lista de voos disponíveis
+    deactivate VooController
+
+    Viajante->>PassagemController: Seleciona voo, assento e informa dados do passageiro e pagamento
+    activate PassagemController
+    PassagemController->>PassagemService: handleComprarPassagem(dados)
+    activate PassagemService
+
+    Note right of PassagemService: Processa o pagamento
+    
+    PassagemService->>BancoDeDados: Cria uma nova Passagem com código de reserva
+    activate BancoDeDados
+    BancoDeDados-->>PassagemService: Confirma criação da passagem
+    deactivate BancoDeDados
+    
+    PassagemService-->>PassagemController: Retorna sucesso
+    deactivate PassagemService
+    
+    PassagemController-->>Viajante: Exibe a confirmação da compra
+    deactivate PassagemController

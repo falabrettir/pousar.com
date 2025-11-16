@@ -1,0 +1,41 @@
+@startuml
+' Define a skinparam para linhas ortogonais, como no exemplo
+skinparam linestyle ortho
+
+' ----- Definição dos Participantes -----
+actor "Viajante" as viajante
+rectangle "UsuarioController" as controller
+rectangle "UsuarioService" as service
+rectangle "BancoDeDados" as db
+
+' ----- Posicionamento (Layout) -----
+' Posiciona o controller à direita do viajante
+viajante -[hidden]right- controller
+' Posiciona o service abaixo do controller
+controller -[hidden]down- service
+' Posiciona o db à direita do service
+service -[hidden]right- db
+
+' ----- Links de Comunicação e Mensagens -----
+
+' 1. Interação: Viajante <-> Controller (Formulário)
+viajante -right-> controller: 1: Clica no botão 'Entrar'
+controller -left-> viajante: 1.1: Exibe o formulário de login
+
+' 2. Interação: Viajante <-> Controller (Login)
+' Texto quebrado com \n
+viajante -up-> controller: 2: Preenche email, senha\ne clica em 'Confirmar'
+' Texto quebrado com \n
+controller -left-> viajante: 2.2: Redireciona para a página\nprincipal (dashboard)
+
+' 3. Interação: Controller <-> Service (Vertical)
+controller -left-> service: 2.1: handleLogin(email, senha)
+' Texto quebrado com \n
+service -right-> controller: 2.1.2: Retorna que o usuário\nfoi autenticado
+
+' 4. Interação: Service <-> BancoDeDados (Horizontal)
+service -right-> db: 2.1.1: Busca viajante pelo email
+' Texto quebrado com \n
+db -left-> service: 2.1.1.1: Retorna dados do viajante\n(com senha hash)
+
+@enduml

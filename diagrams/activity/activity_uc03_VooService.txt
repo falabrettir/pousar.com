@@ -1,0 +1,16 @@
+@startuml
+hide empty description
+
+start
+
+:Busca voos disponíveis;
+
+if () then ([Nenhum voo encontrado])
+    :Define retorno de lista vazia;
+else ([Voos encontrados])
+    :Define retorno de lista de voos;
+endif
+
+stop
+
+@enduml

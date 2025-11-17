@@ -1,0 +1,12 @@
+@startuml
+hide empty description
+
+start
+
+:Recebe valor da nota;
+
+:Recebe texto do comentário;
+
+stop
+
+@enduml

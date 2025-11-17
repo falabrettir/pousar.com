@@ -1,0 +1,16 @@
+@startuml
+hide empty description
+
+start
+
+:Verifica preenchimento da nota;
+
+if () then ([Nota não informada])
+    :Define retorno de erro;
+else ([Nota informada])
+    :Define dados como válidos;
+endif
+
+stop
+
+@enduml

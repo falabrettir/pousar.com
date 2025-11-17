@@ -1,0 +1,16 @@
+@startuml
+hide empty description
+
+start
+
+:Processa o pagamento;
+
+if () then ([Pagamento recusado])
+    :Define retorno de erro;
+else ([Pagamento autorizado])
+    :Define pagamento validado;
+endif
+
+stop
+
+@enduml

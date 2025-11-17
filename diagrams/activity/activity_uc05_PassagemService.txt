@@ -1,0 +1,16 @@
+@startuml
+hide empty description
+
+start
+
+:Busca passagens associadas ao CPF;
+
+if () then ([Nenhuma passagem encontrada])
+    :Define retorno de lista vazia;
+else ([Passagens encontradas])
+    :Define retorno de lista preenchida;
+endif
+
+stop
+
+@enduml

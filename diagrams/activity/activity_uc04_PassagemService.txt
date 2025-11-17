@@ -1,0 +1,16 @@
+@startuml
+hide empty description
+
+start
+
+:Verifica antecedência do voo;
+
+if () then ([Fora do prazo])
+    :Define retorno de erro;
+else ([Dentro do prazo])
+    :Define regras atendidas;
+endif
+
+stop
+
+@enduml

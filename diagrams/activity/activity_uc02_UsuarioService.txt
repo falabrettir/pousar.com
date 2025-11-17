@@ -1,0 +1,16 @@
+@startuml
+hide empty description
+
+start
+
+:Compara senha fornecida com hash armazenada;
+
+if () then ([Senha incorreta])
+    :Define retorno de erro;
+else ([Senha correta])
+    :Define usuário autenticado;
+endif
+
+stop
+
+@enduml

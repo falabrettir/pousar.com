@@ -1,0 +1,16 @@
+@startuml
+hide empty description
+
+start
+
+:Verifica data atual em relação ao voo;
+
+if () then ([Data atual < Data voo])
+    :Mantém status Confirmada;
+else ([Data atual >= Data voo])
+    :Habilita transição de estado;
+endif
+
+stop
+
+@enduml

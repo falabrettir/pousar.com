@@ -1,0 +1,22 @@
+@startuml
+hide empty description
+
+start
+
+:Verifica existência do email;
+
+if () then ([Email já existe])
+    :Define retorno de erro;
+else ([Email não existe])
+    :Verifica existência do CPF;
+    
+    if () then ([CPF já existe])
+        :Define retorno de erro;
+    else ([CPF não existe])
+        :Define retorno de não existência;
+    endif
+endif
+
+stop
+
+@enduml

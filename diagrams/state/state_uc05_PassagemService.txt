@@ -1,0 +1,29 @@
+@startuml
+hide empty description
+
+' O Gatilho é o método definido na Classe PassagemService (Figura 02)
+[*] --> BuscandoHistorico : consultarHistorico(cpfViajante)
+
+state BuscandoHistorico
+' A ação interna reflete a mensagem enviada ao BancoDeDados no Diagrama de Sequência (Figura 08)
+BuscandoHistorico : do / Busca passagens associadas
+
+' Transição para decisão
+BuscandoHistorico --> VerificacaoRegistros
+
+' Ponto de decisão
+state VerificacaoRegistros <<choice>>
+
+' Caminho 1: Baseado no Fluxo de Exceção da Tabela 06
+VerificacaoRegistros --> [*] : [Nenhuma passagem encontrada]
+
+' Caminho 2: Baseado no retorno do Diagrama de Sequência (Figura 08)
+VerificacaoRegistros --> RetornandoLista : [Passagens encontradas]
+
+state RetornandoLista
+' Reflete o retorno para o Controller
+RetornandoLista : do / Retorna lista de passagens
+
+RetornandoLista --> [*]
+
+@enduml

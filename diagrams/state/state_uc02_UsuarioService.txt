@@ -1,0 +1,36 @@
+@startuml
+hide empty description
+
+' Gatilho: Método chamado pelo UsuarioController na Figura 05
+[*] --> BuscandoUsuario : handleLogin(email, senha)
+
+state BuscandoUsuario
+' Ação: Mensagem enviada ao BancoDeDados na Figura 05
+BuscandoUsuario : do / Busca viajante pelo email
+
+' Transição: Retorno do banco na Figura 05
+BuscandoUsuario --> VerificandoCredenciais : Retorna dados do viajante
+
+state VerificandoCredenciais
+' Ação: Nota amarela explícita na Figura 05
+VerificandoCredenciais : do / Compara a senha fornecida com a senha (hash) armazenada
+
+' Transição para decisão
+VerificandoCredenciais --> DecisaoLogin
+
+' Ponto de decisão (Choice)
+state DecisaoLogin <<choice>>
+
+' Caminho 1: Fluxo de Exceção da Tabela 03 (Passo 1: Senha incorreta)
+DecisaoLogin --> [*] : [Senha incorreta] / Retorna erro
+
+' Caminho 2: Fluxo Básico da Figura 05
+DecisaoLogin --> Autenticado : [Senha correta]
+
+state Autenticado
+' Ação: Mensagem de retorno para o Controller na Figura 05
+Autenticado : do / Retorna que o usuário foi autenticado
+
+Autenticado --> [*]
+
+@enduml

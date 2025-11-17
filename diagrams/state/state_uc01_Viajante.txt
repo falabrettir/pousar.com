@@ -1,0 +1,40 @@
+@startuml
+hide empty description
+
+' Início: O usuário acessa a tela de cadastro (Tabela 02, Passo 2)
+[*] --> PreenchendoFormulario
+
+state PreenchendoFormulario
+' Ações: Baseadas na Tabela 02 (Passo 3) e Dicionário de Dados (Tabela 08)
+PreenchendoFormulario : entry / Exibe formulário de cadastro
+PreenchendoFormulario : do / Recebe Nome, Email, CPF e Senha
+
+' Transição: Ação do Ator na Tabela 02 (Passo 5)
+PreenchendoFormulario --> ValidandoFormato : Clica em "Criar Conta"
+
+state ValidandoFormato
+' Ação: Baseada na Tabela 02 (Passo 4 - Valida dados em tempo real)
+ValidandoFormato : do / Valida formato do email
+ValidandoFormato : do / Valida força da senha
+
+' Ponto de Decisão
+ValidandoFormato --> DecisaoDados
+
+state DecisaoDados <<choice>>
+
+' Caminho 1: Erro de formatação (Retorno à tela anterior)
+DecisaoDados --> PreenchendoFormulario : [Dados inválidos] / Exibe erro
+
+' Caminho 2: Sucesso na validação local, segue para persistência
+DecisaoDados --> Cadastrado : [Dados válidos]
+
+state Cadastrado
+' Estado Final: Baseado na Tabela 02 (Passo 7 - Cria novo registro)
+Cadastrado : entry / Persiste dados na tabela viajantes
+Cadastrado : do / Aguarda login
+' Ação: Baseada na Tabela 02 (Passo 8)
+Cadastrado : exit / Redireciona para login
+
+Cadastrado --> [*]
+
+@enduml

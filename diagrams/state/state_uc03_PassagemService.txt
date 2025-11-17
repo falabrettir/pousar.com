@@ -1,0 +1,32 @@
+@startuml
+hide empty description
+
+' Gatilho: Método chamado pelo PassagemController na Figura 06
+[*] --> ProcessandoPagamento : handleComprarPassagem(dados)
+
+state ProcessandoPagamento
+' Ação: Nota amarela explícita desenhada na Figura 06
+ProcessandoPagamento : do / Processa o pagamento
+
+' Transição para decisão
+ProcessandoPagamento --> DecisaoPagamento
+
+' Ponto de decisão (Choice)
+state DecisaoPagamento <<choice>>
+
+' Caminho 1: Fluxo de Exceção da Tabela 04 (Passo 2)
+DecisaoPagamento --> [*] : [Pagamento recusado] / Exibe erro
+
+' Caminho 2: Continuidade do Fluxo na Figura 06
+DecisaoPagamento --> GerandoPassagem : [Pagamento autorizado]
+
+state GerandoPassagem
+' Ação: Mensagem exata enviada ao BancoDeDados na Figura 06
+GerandoPassagem : do / Cria uma nova Passagem com código de reserva
+' Ação: Confirmação de retorno do BancoDeDados na Figura 06
+GerandoPassagem : exit / Confirma criação da passagem
+
+' Finalização: Mensagem de retorno para o Controller na Figura 06
+GerandoPassagem --> [*] : Retorna sucesso
+
+@enduml

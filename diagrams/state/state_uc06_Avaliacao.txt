@@ -1,0 +1,21 @@
+@startuml
+hide empty description
+
+' Estado Inicial: Criação do objeto com dados do formulário
+[*] --> NovaAvaliacao
+
+state NovaAvaliacao
+' Atributos definidos na Tabela 09 (Dicionário de Dados)
+NovaAvaliacao : entry / Recebe Nota e Comentario
+NovaAvaliacao : do / Aguarda validação
+
+' Transição: Ação de persistência da Figura 09
+NovaAvaliacao --> Salva : Salva na tabela 'avaliacoes'
+
+state Salva
+' Estado final: Dado persistido
+Salva : do / Armazenada no histórico
+
+Salva --> [*]
+
+@enduml

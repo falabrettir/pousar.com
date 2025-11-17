@@ -1,0 +1,29 @@
+@startuml
+hide empty description
+
+' Gatilho: Método chamado pelo VooController na Figura 06 e Diagrama de Classes (Figura 02)
+[*] --> BuscandoVoos : handleBuscarVoos(dados)
+
+state BuscandoVoos
+' Ação: Mensagem exata enviada ao BancoDeDados na Figura 06
+BuscandoVoos : do / Busca voos disponíveis
+
+' Transição para decisão
+BuscandoVoos --> DecisaoBusca
+
+' Ponto de decisão (Choice)
+state DecisaoBusca <<choice>>
+
+' Caminho 1: Fluxo de Exceção da Tabela 04 (Passo 1)
+DecisaoBusca --> [*] : [Nenhum voo encontrado] / Exibe mensagem
+
+' Caminho 2: Fluxo Básico da Figura 06 ("Retorna lista de voos")
+DecisaoBusca --> RetornandoLista : [Voos encontrados]
+
+state RetornandoLista
+' Ação: Mensagem de retorno para o VooController na Figura 06
+RetornandoLista : do / Retorna lista de voos
+
+RetornandoLista --> [*]
+
+@enduml

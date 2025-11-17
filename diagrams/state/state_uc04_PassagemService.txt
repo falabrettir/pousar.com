@@ -1,0 +1,32 @@
+@startuml
+hide empty description
+
+' Gatilho: Método chamado pelo PassagemController na Figura 07
+[*] --> VerificandoRegras : handleCancelarPassagem(idPassagem)
+
+state VerificandoRegras
+' Ação: Mensagem exata enviada ao BancoDeDados na Figura 07
+VerificandoRegras : do / Verifica as regras de negócio para cancelamento
+
+' Transição para decisão
+VerificandoRegras --> DecisaoCancelamento
+
+' Ponto de decisão (Choice)
+state DecisaoCancelamento <<choice>>
+
+' Caminho 1: Fluxo de Exceção da Tabela 05
+DecisaoCancelamento --> [*] : [Regras não atendidas] / Retorna erro
+
+' Caminho 2: Fluxo Básico da Figura 07 ("Retorna que as regras foram atendidas")
+DecisaoCancelamento --> AtualizandoStatus : [Regras atendidas]
+
+state AtualizandoStatus
+' Ação: Mensagem exata enviada ao BancoDeDados na Figura 07
+AtualizandoStatus : do / Atualiza o status da passagem para "Cancelada"
+' Ação: Confirmação de retorno do BancoDeDados na Figura 07
+AtualizandoStatus : exit / Confirma a atualização
+
+' Finalização: Mensagem de retorno para o Controller na Figura 07
+AtualizandoStatus --> [*] : Retorna sucesso
+
+@enduml

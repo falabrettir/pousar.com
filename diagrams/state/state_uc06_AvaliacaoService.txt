@@ -1,0 +1,32 @@
+@startuml
+hide empty description
+
+' Gatilho: Método chamado pelo AvaliacaoController na Figura 09
+[*] --> ValidandoAvaliacao : handleCriarAvaliacao(dados)
+
+state ValidandoAvaliacao
+' Ação: Nota amarela explícita na Figura 09
+ValidandoAvaliacao : do / Valida os dados da avaliação
+
+' Transição para decisão
+ValidandoAvaliacao --> DecisaoValidacao
+
+' Ponto de decisão (Choice)
+state DecisaoValidacao <<choice>>
+
+' Caminho 1: Fluxo de Exceção da Tabela 07 (Passo 1: Nota não preenchida)
+DecisaoValidacao --> [*] : [Dados inválidos] / Retorna erro
+
+' Caminho 2: Fluxo Básico da Tabela 07 e Figura 09
+DecisaoValidacao --> SalvandoAvaliacao : [Dados válidos]
+
+state SalvandoAvaliacao
+' Ação: Mensagem enviada ao BancoDeDados na Figura 09
+SalvandoAvaliacao : do / Salva a nova avaliação na tabela 'avaliacoes'
+' Ação: Confirmação de retorno do BancoDeDados na Figura 09
+SalvandoAvaliacao : exit / Confirma que a avaliação foi salva
+
+' Finalização: Mensagem de retorno para o Controller na Figura 09
+SalvandoAvaliacao --> [*] : Retorna sucesso
+
+@enduml

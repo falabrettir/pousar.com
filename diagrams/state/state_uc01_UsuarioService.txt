@@ -1,0 +1,32 @@
+@startuml
+hide empty description
+
+' Gatilho: Método chamado pelo UsuarioController na Figura 04
+[*] --> VerificandoDuplicidade : handleCadastro(dados)
+
+state VerificandoDuplicidade
+' Ação: Mensagem exata enviada ao BancoDeDados na Figura 04
+VerificandoDuplicidade : do / Verifica se email ou CPF já existem
+
+' Transição para decisão
+VerificandoDuplicidade --> DecisaoCadastro
+
+' Ponto de decisão (Choice) para tratar o retorno do banco
+state DecisaoCadastro <<choice>>
+
+' Caminho 1: Fluxo Alternativo/Erro (Baseado na mensagem de retorno da Figura 04 e Regras da Tabela 02)
+DecisaoCadastro --> [*] : [Já existem]
+
+' Caminho 2: Fluxo Principal (Baseado na mensagem "Retorna que não existem" da Figura 04)
+DecisaoCadastro --> CriandoRegistro : [Não existem]
+
+state CriandoRegistro
+' Ação: Mensagem exata enviada ao BancoDeDados na Figura 04
+CriandoRegistro : do / Cria um novo registro na tabela viajantes
+' Ação: Mensagem de retorno do BancoDeDados na Figura 04
+CriandoRegistro : exit / Confirma a criação
+
+' Finalização: Retorno para o UsuarioController na Figura 04
+CriandoRegistro --> [*] : Retorna sucesso
+
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+hide empty description
+
+' Estado Inicial: Baseado no domínio do atributo Status na Tabela 13
+[*] --> Confirmada
+
+state Confirmada
+' Contexto: Passagem válida aguardando uso
+Confirmada : do / Aguarda data do voo
+
+' Transição: Disparada pela ação "Atualiza o status" da Figura 07
+Confirmada --> Cancelada : Atualiza para "Cancelada"
+
+state Cancelada
+' Estado Final: Baseado no domínio do atributo Status na Tabela 13
+Cancelada : do / Inativa para embarque
+
+Cancelada --> [*]
+
+@enduml

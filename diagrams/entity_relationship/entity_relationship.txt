@@ -1,0 +1,122 @@
+graph DER_Pousar_Completo {
+    // --- Configuração Visual ---
+    layout=neato;     // Algoritmo que "espalha" os nós para não sobrepor
+    overlap=false;    // Evita sobreposição
+    splines=true;     // Linhas curvas suaves
+    sep="+35,35";     // Espaçamento entre elementos
+    
+    // Estilo Padrão
+    node [fontname="Helvetica", fontsize=10];
+    edge [fontname="Helvetica", fontsize=9];
+
+    // --- 1. ENTIDADES (Retângulos) ---
+    node [shape=rect, style=filled, color=black, fillcolor="#E6F3FF", penwidth=1.5, height=0.5];
+    Viajante;
+    Voo;
+    Passagem;
+    Aeroporto;
+    Companhia;
+    Avaliacao;
+
+    // --- 2. RELACIONAMENTOS (Losangos) ---
+    node [shape=diamond, style=filled, color=black, fillcolor="#FFFFE0", penwidth=1, height=0.4];
+    Compra;       // Viajante -> Passagem
+    Avalia;       // Viajante -> Avaliacao
+    Referente_a;  // Passagem -> Voo
+    Recebe;       // Passagem -> Avaliacao
+    Opera;        // Companhia -> Voo
+    Origem;       // Aeroporto -> Voo
+    Destino;      // Aeroporto -> Voo
+
+    // --- 3. ATRIBUTOS (Elipses) ---
+    // Dica: Atributos Chave (PK) estão sublinhados ou em cor diferente
+    node [shape=ellipse, style=filled, color=gray, fillcolor="white", width=0.8, height=0.4, penwidth=0.5];
+
+    // > Atributos de VIAJANTE
+    attr_viajante_id [label=<<u>id_viajante</u>>, fillcolor="#DDDDDD"];
+    attr_viajante_nome [label="nome"];
+    attr_viajante_cpf [label="cpf"];
+    attr_viajante_email [label="email"];
+    attr_viajante_senha [label="senha_hash"];
+
+    Viajante -- attr_viajante_id;
+    Viajante -- attr_viajante_nome;
+    Viajante -- attr_viajante_cpf;
+    Viajante -- attr_viajante_email;
+    Viajante -- attr_viajante_senha;
+
+    // > Atributos de VOO
+    attr_voo_id [label=<<u>id_voo</u>>, fillcolor="#DDDDDD"];
+    attr_voo_codigo [label="codigo"];
+    attr_voo_partida [label="partida"];
+    attr_voo_chegada [label="chegada"];
+    attr_voo_preco [label="preco"];
+
+    Voo -- attr_voo_id;
+    Voo -- attr_voo_codigo;
+    Voo -- attr_voo_partida;
+    Voo -- attr_voo_chegada;
+    Voo -- attr_voo_preco;
+
+    // > Atributos de PASSAGEM
+    attr_passagem_id [label=<<u>id_passagem</u>>, fillcolor="#DDDDDD"];
+    attr_passagem_status [label="status"];
+    attr_passagem_assento [label="assento"];
+
+    Passagem -- attr_passagem_id;
+    Passagem -- attr_passagem_status;
+    Passagem -- attr_passagem_assento;
+
+    // > Atributos de AEROPORTO
+    attr_aeroporto_id [label=<<u>id_aeroporto</u>>, fillcolor="#DDDDDD"];
+    attr_aeroporto_cod [label="codigo_iata"];
+    attr_aeroporto_nome [label="nome"];
+
+    Aeroporto -- attr_aeroporto_id;
+    Aeroporto -- attr_aeroporto_cod;
+    Aeroporto -- attr_aeroporto_nome;
+
+    // > Atributos de COMPANHIA
+    attr_companhia_id [label=<<u>id_companhia</u>>, fillcolor="#DDDDDD"];
+    attr_companhia_nome [label="nome"];
+
+    Companhia -- attr_companhia_id;
+    Companhia -- attr_companhia_nome;
+
+    // > Atributos de AVALIACAO
+    attr_avaliacao_id [label=<<u>id_avaliacao</u>>, fillcolor="#DDDDDD"];
+    attr_avaliacao_nota [label="nota"];
+
+    Avaliacao -- attr_avaliacao_id;
+    Avaliacao -- attr_avaliacao_nota;
+
+    // --- 4. LIGAÇÕES E CARDINALIDADES ---
+    
+    // Viajante (1) -- (N) Passagem
+    Viajante -- Compra [label="1", len=2.0];
+    Compra -- Passagem [label="N", len=2.0];
+
+    // Viajante (1) -- (N) Avaliação
+    Viajante -- Avalia [label="1", len=2.5];
+    Avalia -- Avaliacao [label="N", len=2.5];
+
+    // Passagem (N) -- (1) Voo
+    Passagem -- Referente_a [label="N", len=2.0];
+    Referente_a -- Voo [label="1", len=2.0];
+
+    // Passagem (1) -- (0..1) Avaliação
+    Passagem -- Recebe [label="1", len=2.0];
+    Recebe -- Avaliacao [label="0..1", len=2.0];
+
+    // Voo (N) -- (1) Companhia
+    Voo -- Opera [label="N", len=2.5];
+    Opera -- Companhia [label="1", len=2.5];
+
+    // Voo (N) -- (1) Aeroporto (Origem)
+    Voo -- Origem [label="N", len=2.5];
+    Origem -- Aeroporto [label="1", len=2.5];
+
+    // Voo (N) -- (1) Aeroporto (Destino)
+    Voo -- Destino [label="N", len=2.5];
+    Destino -- Aeroporto [label="1", len=2.5];
+}
